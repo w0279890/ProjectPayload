@@ -1,0 +1,38 @@
+file_name = 'DATALOGedited.txt'
+access_mode = 'r'
+
+new_file_name = 'GPSVisualizer.txt'
+new_access_mode = 'w'
+line_count = 0
+
+#read file
+with open(file_name) as my_file:
+    content = my_file.read()
+    for lines in content.split('\n'):
+        line_count += 1
+
+count = 1
+#access files, read lines, print new lines
+with open(new_file_name, new_access_mode) as new_file:
+    new_file.write('latitude,longitude,elevation,name\n')
+    for line in content.split('\n'):
+        if 'Lat' in line:
+            param, value = line.split(':',1)
+            whole, decimal = value.split('.',1)
+            whole1 = float(whole)
+            decimal1 = ((float(decimal)/100000)/60)
+            total = whole1 + decimal1
+            new_file.write(("%.7f" % total) + ',')
+        if 'Lon' in line:
+            param, value = line.split('-',1)
+            whole, decimal = value.split('.',1)
+            whole1 = float(whole)
+            decimal1 = ((float(decimal)/100000)/60)
+            total = whole1 + decimal1
+            new_file.write(('-' + "%.7f" % total) + ',')
+        if 'Alt' in line:
+            param, value = line.split(' ',1)
+            new_file.write(str(value) + ',')
+            new_file.write('point ' + str(count) + '\n')
+            count+=1
+        
